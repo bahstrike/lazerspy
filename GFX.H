@@ -7,8 +7,6 @@
 
 #define MAXSPRITES 256
 
-extern byte bgColor;
-
 enum color
 {
 	C_BLACK = 0,
@@ -29,28 +27,28 @@ enum color
 	C_WHITE = 15
 };
 
-typedef struct _sprite
+struct sprite
 {
 	char width;
 	char height;
 	unsigned char* data;
-} sprite;
+};
 
 void gfxinit();
 void gfxshutdown();
 
-void gfxclear(byte c);
+void gfxclear(unsigned char c);
 
-void gfxsetbgcolor(byte c);
+void gfxsetbgcolor(unsigned char c);
 
 
-void pset(short x, short y, byte c);
-void fillrect(short x0, short y0, short x1, short y1, byte c);
+void pset(short x, short y, unsigned char c);
+void fillrect(short x0, short y0, short x1, short y1, unsigned char c);
 void drawtext(short x, short y, const char* txt);
 
 
-const sprite* createsprite(char width, char height, const char* sz);
-void drawsprite(const sprite* spr, float ox, float oy);
+const struct sprite* createsprite(char width, char height, const char* sz);
+void drawsprite(const struct sprite* spr, float ox, float oy);
 
 
 

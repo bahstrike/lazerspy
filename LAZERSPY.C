@@ -1,4 +1,5 @@
 #include "def.h"
+#include "thing.h"
 #include "gfx.h"
 #include "util.h"
 
@@ -8,7 +9,7 @@
 #include <mem.h>
 
 
-sprite* cratesprite4x4 = 0;
+struct sprite* cratesprite4x4 = 0;
 char* _cratesprite4x4 =
 "3333"
 "3  3"
@@ -16,7 +17,7 @@ char* _cratesprite4x4 =
 "3333"
 ;
 
-sprite* guy8x8 = 0;
+struct sprite* guy8x8 = 0;
 char* _guy8x8 =
 "   r    "
 "  r r   "
@@ -28,12 +29,13 @@ char* _guy8x8 =
 "  r   r "
 ;
 
-unsigned char bgColor = C_LIGHTCYAN;
+// now in gfx.c
+//unsigned char bgColor = C_LIGHTCYAN;
 
 void main()
 {
 	short x, y;
-	thing* plr;
+	struct thing* plr;
 
 	gfxinit();
 
@@ -43,7 +45,7 @@ void main()
 
 	worldinit();
 
-	plr = creatething(
+	plr = creatething(guy8x8, 100.0f, 100.0f);
 
 
 	for(;;)
@@ -63,7 +65,9 @@ void main()
 			for(y=10; y<200; y+=130)
 				drawsprite(cratesprite4x4, x, y);
 
-		drawsprite(guy8x8, 100, 100);
+		//drawsprite(guy8x8, 100, 100);
+
+		worlddraw();
 
 		{
 			int ver = 420;

@@ -7,8 +7,10 @@
 
 volatile unsigned char far *gfx = (volatile unsigned char far*)0xA0000000L;
 
+unsigned char bgColor = C_LIGHTCYAN;
+
 unsigned short numSprites = 0;
-sprite sprites[MAXSPRITES];
+struct sprite sprites[MAXSPRITES];
 
 void gfxpageflip()
 {
@@ -66,7 +68,7 @@ void gfxshutdown()
 
 	for(x=0; x<numSprites; x++)
 	{
-		sprite* spr = &sprites[x];
+		struct sprite* spr = &sprites[x];
 
 		free(spr->data);
 	}
@@ -132,9 +134,9 @@ byte DecodeColor(char c)
 	}
 }
 
-const sprite* createsprite(char width, char height, const char* sz)
+const struct sprite* createsprite(char width, char height, const char* sz)
 {
-	sprite* spr;
+	struct sprite* spr;
 
 	if(numSprites >= MAXSPRITES)
 		return 0;
@@ -164,10 +166,10 @@ const sprite* createsprite(char width, char height, const char* sz)
 			}
 	}
 
-   return spr;
+	return spr;
 }
 
-void drawsprite(const sprite* spr, float ox, float oy)
+void drawsprite(const struct sprite* spr, float ox, float oy)
 {
 	short x, y;
 	unsigned char* sd = spr->data;

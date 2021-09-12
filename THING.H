@@ -1,15 +1,18 @@
 #ifndef _THING_H
 #define _THING_H
 
-typedef struct _thing
+#include "gfx.h"
+
+struct thing
 {
 	float x;
 	float y;
 	float vx;
 	float vy;
 
-} thing;
+	const struct sprite* spr;
+};
 
-void thingreset(thing* t);
+void thingreset(struct thing* t);
 
 #endif

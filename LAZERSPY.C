@@ -1,7 +1,6 @@
 #include "def.h"
 #include "gfx.h"
 #include "util.h"
-#include "render.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -9,14 +8,16 @@
 #include <mem.h>
 
 
-char* cratesprite4x4 =
+sprite* cratesprite4x4 = 0;
+char* _cratesprite4x4 =
 "3333"
 "3  3"
 "3  3"
 "3333"
 ;
 
-char* guy8x8 =
+sprite* guy8x8 = 0;
+char* _guy8x8 =
 "   r    "
 "  r r   "
 "   rr   "
@@ -35,6 +36,9 @@ void main()
 
 	gfxinit();
 
+	cratesprite4x4 = createsprite(4, 4, _cratesprite4x4);
+	guy8x8 = createsprite(8, 8, _guy8x8);
+
 	pset(10,10,1);	//gfx[ 10 + 10*scrWidth ] = 1;
 
 
@@ -43,9 +47,9 @@ void main()
 
 	for(x=10; x<300; x+=5)
 		for(y=10; y<200; y+=130)
-			drawsprite(cratesprite4x4, 4, 4, x, y);
+			drawsprite(cratesprite4x4, x, y);
 
-	drawsprite(guy8x8, 8, 8, 100, 100);
+	drawsprite(guy8x8, 100, 100);
 
 	{
 		int ver = 420;
@@ -55,6 +59,7 @@ void main()
 
 		drawtext(1, 1, sz);
 
+		gfxpageflip();
 	}
 
 

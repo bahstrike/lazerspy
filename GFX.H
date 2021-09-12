@@ -5,7 +5,36 @@
 #define SCRWIDTH 320
 #define SCRHEIGHT 200
 
+#define MAXSPRITES 256
+
 extern byte bgColor;
+
+enum color
+{
+	C_BLACK = 0,
+	C_BLUE = 1,
+	C_GREEN = 2,
+	C_CYAN = 3,
+	C_RED = 4,
+	C_MAGENTA = 5,
+	C_BROWN = 6,
+	C_LIGHTGRAY = 7,
+	C_DARKGRAY = 8,
+	C_LIGHTBLUE = 9,
+	C_LIGHTGREEN = 10,
+	C_LIGHTCYAN = 11,
+	C_LIGHTRED = 12,
+	C_LIGHTMAGENTA = 13,
+	C_YELLOW = 14,
+	C_WHITE = 15
+};
+
+typedef struct _sprite
+{
+	char width;
+	char height;
+	unsigned char* data;
+} sprite;
 
 void gfxinit();
 void gfxshutdown();
@@ -14,7 +43,16 @@ void gfxclear(byte c);
 
 void gfxsetbgcolor(byte c);
 
+
 void pset(short x, short y, byte c);
+void fillrect(short x0, short y0, short x1, short y1, byte c);
+void drawtext(short x, short y, const char* txt);
+
+
+const sprite* createsprite(char width, char height, const char* sz);
+void drawsprite(const sprite* spr, float ox, float oy);
+
+
 
 
 #endif

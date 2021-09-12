@@ -1,7 +1,19 @@
 #include "def.h"
 #include "gfx.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <conio.h>
+//#include <graphics.h>
 
 volatile unsigned char far *gfx = (volatile unsigned char far*)0xA0000000L;
+
+unsigned short numSprites = 0;
+sprite sprites[MAXSPRITES];
+
+void gfxpageflip()
+{
+
+}
 
 void gfxinit()
 {
@@ -31,6 +43,8 @@ void gfxclear(byte c)
 // seem to work in graphics mode at all..  so *shrug*
 void gfxsetbgcolor(byte c)
 {
+	return;//dunno wuts breakin
+
 	asm {
 		push ax
 		push bx
@@ -48,6 +62,16 @@ void gfxsetbgcolor(byte c)
 
 void gfxshutdown()
 {
+	unsigned short x;
+
+	for(x=0; x<numSprites; x++)
+	{
+		sprite* spr = &sprites[x];
+
+		free(spr->data);
+	}
+	numSprites = 0;
+
 
 	// restore text mode
 	asm {
@@ -67,4 +91,96 @@ void pset(short x, short y, byte c)
 }
 
 
+void fillrect(short x0, short y0, short x1, short y1, byte c)
+{
+	int x, y;
 
+	for(y=y0; y<y1; y++)
+		for(x=x0; x<x1; x++)
+			pset(x, y, c);
+}
+
+void drawtext(short x, short y, const char* txt)
+{
+	gotoxy(x, y);
+
+	//gfxsetbgcolor(bgColor);
+
+	printf(txt);
+}
+
+byte DecodeColor(char c)
+{
+	// handle 0..9
+	if( c >= '0' && c <= '9' )
+	{
+		return (byte)( c - '0' );
+	}
+
+	// handle a..f
+	if( c >= 'a' && c <= 'f' )
+	{
+		return (byte)( c - 'a' + 9 + 1/*base offset from 0..9;  a is 10*/ );
+	}
+
+	switch(c)
+	{
+		//case '3': return 3;
+		case 'r': return 4;// red?
+		case ' ': return bgColor;
+		default: return 12;// some dumb shit for unrec colors
+	}
+}
+
+const sprite* createsprite(char width, char height, const char* sz)
+{
+	sprite* spr;
+
+	if(numSprites >= MAXSPRITES)
+		return 0;
+
+	spr = &sprites[numSprites++];
+
+	spr->width = width;
+	spr->height = height;
+	spr->data = malloc(width*height);
+
+	{
+		short x, y;
+		unsigned char* sd = spr->data;
+
+		for(y=0; y<spr->height; y++)
+			for(x=0; x<spr->width; x++)
+			{
+				//long fx, fy;
+				char c = *(sz++);
+				unsigned char fc = DecodeColor(c);
+
+				//fx = (long)ox + (long)x;
+				//fy = (long)oy + (long)y;
+
+				//pset((short)fx, (short)fy, fc);
+				*(sd++) = fc;
+			}
+	}
+
+   return spr;
+}
+
+void drawsprite(const sprite* spr, float ox, float oy)
+{
+	short x, y;
+	unsigned char* sd = spr->data;
+
+	for(y=0; y<spr->height; y++)
+		for(x=0; x<spr->width; x++)
+		{
+			long fx, fy;
+			unsigned char fc = *(sd++);
+
+			fx = (long)ox + (long)x;
+			fy = (long)oy + (long)y;
+
+			pset((short)fx, (short)fy, fc);
+		}
+}

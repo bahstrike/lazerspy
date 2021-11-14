@@ -11,4 +11,4 @@ this is a 16-bit DOS application, to be run on actual hardware or via emulator l
 
 ### development
 
-the code project files are intended for `Borland C++ 4.52`,   IDE run under under win3.x  or win9x platform
+the code project files are intended for `Borland C++ 4.52`,   IDE run under win3.x  or win9x platform

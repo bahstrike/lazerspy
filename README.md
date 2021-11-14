@@ -1,5 +1,7 @@
 # lazerspy
 
+doesnt really do anything yet.  this project might be deleted dunno
+
 **DO NOT EXPECT THIS EXE TO RUN ON MODERN OS**
 
 this is a 16-bit DOS application, to be run on actual hardware or via emulator.
